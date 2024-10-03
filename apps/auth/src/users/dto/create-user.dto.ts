@@ -18,6 +18,14 @@ export class CreateUserDto {
     @IsNotEmpty()
     phone: string;
 
+    @IsString()
+    @IsNotEmpty()
+    position: string;
+
+    @IsString()
+    @IsNotEmpty()
+    isActive: boolean;
+
     @IsNumber()
     @IsNotEmpty()
     age: number;

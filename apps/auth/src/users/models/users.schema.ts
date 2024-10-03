@@ -4,7 +4,7 @@ import { AbstractDocument } from "@app/common";
 
 @Schema({versionKey: false})
 export class UserDocument extends AbstractDocument {
-    @Prop()
+    @Prop({unique: true})
     email: string;
 
     @Prop()
@@ -15,6 +15,12 @@ export class UserDocument extends AbstractDocument {
 
     @Prop()
     phone: string;
+
+    @Prop()
+    position: string;
+
+    @Prop()
+    isActive: boolean;
 
     @Prop()
     age: number;
