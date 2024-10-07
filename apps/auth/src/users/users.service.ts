@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersRepository } from './users.repository';
 import * as bcrypt from 'bcryptjs'
@@ -21,5 +21,16 @@ export class UsersService {
             }
             throw new InternalServerErrorException('Something went wrong')
         }
+    }
+
+    // login
+    async verify(email: string, password: string) {
+        const user = await this.usersRepository.findOne({email: email})
+        const isPassword = await bcrypt.compare(password, user.password)
+
+        if (!isPassword) {
+            throw new UnauthorizedException('Invalid credentials')
+        }
+        return user
     }
 }
