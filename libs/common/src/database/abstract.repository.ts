@@ -36,7 +36,7 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
             }
         ).lean<TDocument>(true)
 
-        if(!Document) {
+        if(!document) {
             this.logger.warn('document was not found', filterQuery)
             throw new NotFoundException('This document does not exist')
         }
