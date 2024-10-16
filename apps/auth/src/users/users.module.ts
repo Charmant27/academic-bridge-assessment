@@ -7,6 +7,7 @@ import { UsersRepository } from './users.repository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { NOTIFICATIONS_SERVICE } from '@app/common/constants';
 import { ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 
 @Module({
@@ -15,6 +16,15 @@ import { ConfigService } from '@nestjs/config';
     DatabaseModule.forFeature([
         {name: UserDocument.name, schema: UserSchema}
     ]),
+    JwtModule.registerAsync({
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: `${configService.get('JWT_EXPIRATION')}s`,
+        },
+      }),
+      inject: [ConfigService],
+    }),
     ClientsModule.registerAsync([
       {
         name: NOTIFICATIONS_SERVICE,
