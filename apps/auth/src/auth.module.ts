@@ -8,6 +8,8 @@ import { JwtModule } from '@nestjs/jwt';
 import * as Joi from 'joi'
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { NOTIFICATIONS_SERVICE } from '@app/common/constants';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { JwtStrategy } from './strategies/jwt.strategy';
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION: Joi.string().required(),
         PORT: Joi.number().required(),
+        NOTIFICATIONS_HOST: Joi.string().required(),
+        NOTIFICATIONS_PORT: Joi.number().required(),
       }),
     }),
     JwtModule.registerAsync({
@@ -31,9 +35,22 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       }),
       inject: [ConfigService],
     }),
+    ClientsModule.registerAsync([
+      {
+        name: NOTIFICATIONS_SERVICE,
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.TCP,
+          options: {
+            host: configService.get('NOTIFICATIONS_HOST'),
+            port: configService.get('NOTIFICATIONS_PORT')
+          }
+        }),
+        inject: [ConfigService]
+      }
+    ])
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
-  // exports: [UsersService]
+  exports: [AuthService, ClientsModule]
 })
 export class AuthModule {}
