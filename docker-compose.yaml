@@ -35,6 +35,18 @@ services:
       - '3003:3003'
     volumes:
       - .:/usr/src/app
+  attendance:
+    build:
+      context: .
+      dockerfile: ./apps/attendance/Dockerfile
+      target: development
+    command: npm run start:dev attendance
+    env_file:
+      - ./apps/attendance/.env
+    ports:
+      - '3004:3004'
+    volumes:
+      - .:/usr/src/app
   mongo:
     image: mongo
   
