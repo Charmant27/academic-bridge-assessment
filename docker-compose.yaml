@@ -23,6 +23,18 @@ services:
       - '3001:3001'
     volumes:
       - .:/usr/src/app
+  employee:
+    build:
+      context: .
+      dockerfile: ./apps/employee/Dockerfile
+      target: development
+    command: npm run start:dev employee
+    env_file:
+      - ./apps/employee/.env
+    ports:
+      - '3003:3003'
+    volumes:
+      - .:/usr/src/app
   mongo:
     image: mongo
   
