@@ -18,5 +18,4 @@ export class EmployeeDocument extends AbstractDocument {
 }
 
 export const EmployeeSchema = SchemaFactory.createForClass(EmployeeDocument)
-EmployeeSchema.index({email: 1}, {unique: true})
 

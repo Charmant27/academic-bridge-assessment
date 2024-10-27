@@ -43,6 +43,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/employee/tsconfig.app.json"
       }
+    },
+    "attendance": {
+      "type": "application",
+      "root": "apps/attendance",
+      "entryFile": "main",
+      "sourceRoot": "apps/attendance/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/attendance/tsconfig.app.json"
+      }
     }
   },
   "monorepo": true,
